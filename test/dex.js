@@ -91,7 +91,7 @@ contract('Dex', (accounts) => {
         assert(balanceDai.toString() === web3.utils.toWei('1000'));
     });
 
-    it('Should not withdraw token if token does not exist'), async () => {
+    it('should not withdraw token if token does not exist', async () => {
         await expectRevert(
             dex.withdraw(
                 web3.utils.toWei('100'),
@@ -100,21 +100,24 @@ contract('Dex', (accounts) => {
             ),
             'this token does not exist'
         );
-    };
+    });
 
-    it('Should not withdraw token if balance is too low'), async () => {
+    it('should not withdraw token if balance is too low', async () => {
         await dex.deposit(
             web3.utils.toWei('100'),
             DAI,
             {from: trader1}
         );
-        await dex.withdraw(
-            web3.utils.toWei('1000'),
-            DAI,
-            {from: trader1}
+        await expectRevert(
+            dex.withdraw(
+                web3.utils.toWei('1000'),
+                DAI,
+                {from: trader1}
+            ),
+            'balance too low'
         );
-    }
-    
+    });
+
     it('should create limit order', async () => {
         await dex.deposit(
             web3.utils.toWei('100'),
@@ -128,7 +131,7 @@ contract('Dex', (accounts) => {
             10,
             SIDE.BUY,
             {from: trader1}
-        )
+        );
 
         const buyOrders = await dex.getOrders(REP,SIDE.BUY);
         const sellOrders = await dex.getOrders(REP,SIDE.SELL);
@@ -138,5 +141,5 @@ contract('Dex', (accounts) => {
         assert(buyOrders[0].price === '10');
         assert(buyOrders[0].amount === web3.utils.toWei('10'));
         assert(sellOrders.length === 0);
-    })
+    });
 });
