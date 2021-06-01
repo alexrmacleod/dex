@@ -3,7 +3,7 @@ function Dropdown({onSelect, activeItem, items}) {
     const [dropdownVisible, setDropdownVisible] = useState(false);
 
     const selectItem = (e, item) => {
-        e.preventDefaults();
+        e.preventDefault();
         setDropdownVisible(!dropdownVisible);
         onSelect(item);
     }
@@ -11,7 +11,7 @@ function Dropdown({onSelect, activeItem, items}) {
     return (
         <div className="dropdown ml-3">
             <button 
-                class="btn btn-secondary dropdown-toggle" 
+                className="btn btn-secondary dropdown-toggle" 
                 type="button"
                 onClick={() => setDropdownVisible(!dropdownVisible)}
             >
@@ -19,8 +19,10 @@ function Dropdown({onSelect, activeItem, items}) {
             </button>
             <div className={`dropdown-menu ${dropdownVisible ? 'visible' : ''}`}>
                 {items && items.map((item,i) => (
-                    <a className={`dropdown-item ${item.value === activeItem.value ? 'active' : null}`} 
+                    <a 
+                        className={`dropdown-item ${item.value === activeItem.value ? 'active' : null}`} 
                         href="#"
+                        key={i}
                         onClick={e => selectItem(e,item.value)}
                     >
                         {item.label}

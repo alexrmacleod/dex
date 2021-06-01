@@ -1,6 +1,6 @@
 import Web3 from 'web3';
-// import Dex from './contracts/Dex.json';
-// import ERC20Abi from './ERC20Abi.json';
+import Dex from './contracts/Dex.json';
+import ERC20Abi from './ERC20Abi.json';
 
 const getWeb3 = () => {
   return new Promise((resolve, reject) => {
@@ -39,21 +39,22 @@ const getWeb3 = () => {
 };
 
 const getContracts = async web3 => {
-//   const networkId = await web3.eth.net.getId();
-//   const deployedNetwork = Dex.networks[networkId];
-//   const dex = new web3.eth.Contract(
-//     Dex.abi,
-//     deployedNetwork && deployedNetwork.address,
-//   );
-//   const tokens = await dex.methods.getTokens().call();
-//   const tokenContracts =  tokens.reduce((acc, token) => ({
-//       ...acc,
-//       [web3.utils.hexToUtf8(token.ticker)]: new web3.eth.Contract(
-//           ERC20Abi,
-//           token.tokenAddress
-//       )
-//   }), {});
-//   return {dex, ...tokenContracts}
+  const networkId = await web3.eth.net.getId();
+  const deployedNetwork = Dex.networks[networkId];
+  const dex = new web3.eth.Contract(
+    Dex.abi,
+    deployedNetwork && deployedNetwork.address,
+  );
+
+  const tokens = await dex.methods.getTokens().call();
+  const tokenContracts = tokens.reduce((acc, token) => ({
+      ...acc,
+      [web3.utils.hexToUtf8(token.ticker)]: new web3.eth.Contract(
+          ERC20Abi,
+          token.tokenAddress
+      )
+  }), {});
+  return { dex, ...tokenContracts }; 
 }
 
 export { getWeb3, getContracts };
