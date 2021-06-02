@@ -1,4 +1,11 @@
 # dex
-decentralized orderbook exchange with market and limit orders
+decentralized order-book exchange
 
-![video demo of dex](https://github.com/alexrmacleod/dex/blob/main/dex.mp4)
+features:
+charts
+market orders
+limit orders
+wallet
+4 tokens
+
+![video demo of dex](https://youtu.be/UXhqVX9Nl_Y)
